@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.well.sanwei.dao.ResourceDao">
+	<select id="queryById" parameterType="int" resultType="resource">
+		select id,resourceType,primaryCategory,sencondCategory,thirdCategory,
+		point,courseName,outline,resourceUrl,price,coverUrl,fileType,status
+		,createAt,creatorId,creatName 
+		from t_resource where id=#{id}
+	</select>
+	
+	<insert id="insert" parameterType="resource" useGeneratedKeys="true" keyProperty="id">
+		insert into t_resource(resourceType,primaryCategory,sencondCategory,thirdCategory,
+		point,courseName,outline,resourceUrl,price,coverUrl,fileType,status,createAt,creatorId,creatName)
+		values(
+		#{resourceType,jdbcType=VARCHAR},#{primaryCategory,jdbcType=VARCHAR},#{sencondCategory,jdbcType=VARCHAR},
+		#{thirdCategory,jdbcType=VARCHAR},#{point,jdbcType=VARCHAR},
+		#{courseName,jdbcType=VARCHAR},#{outline,jdbcType=VARCHAR},#{resourceUrl,jdbcType=VARCHAR},
+		#{price,jdbcType=DECIMAL},#{coverUrl,jdbcType=VARCHAR},#{fileType,jdbcType=VARCHAR},
+		#{status,jdbcType=INTEGER},now(),#{creatorId,jdbcType=INTEGER},
+		#{creatName,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<select id="queryList" parameterType="resource" resultType="resource">
+		select id,resourceType,primaryCategory,sencondCategory,thirdCategory,
+		point,courseName,outline,resourceUrl,price,coverUrl,fileType,status
+		,createAt,creatorId,creatName 
+		from t_resource where 1=1
+		<if test="primaryCategory!=null">
+			and primaryCategory=#{primaryCategory}
+		</if>
+		<if test="sencondCategory!=null">
+			and sencondCategory=#{sencondCategory}
+		</if>
+		<if test="thirdCategory!=null">
+			and thirdCategory=#{thirdCategory}
+		</if>
+		<if test="resourceType!=null">
+			and resourceType=#{resourceType}
+		</if>
+		limit #{min},#{max}
+	</select>
+	
+	<select id="queryByKey" parameterType="resource" resultType="resource">
+		select id,resourceType,primaryCategory,sencondCategory,thirdCategory,
+		point,courseName,outline,resourceUrl,price,coverUrl,fileType,status
+		,createAt,creatorId,creatName 
+		from t_resource 
+		where courseName like CONCAT('%',#{courseName},'%') 
+		or creatName like CONCAT('%',#{creatName},'%') 
+		limit #{min},#{max}
+	</select>
+	<select id="queryByUserId" parameterType="int" resultType="resource">
+		select id,resourceType,primaryCategory,sencondCategory,thirdCategory,
+		point,courseName,outline,resourceUrl,price,coverUrl,fileType,status
+		,createAt,creatorId,creatName 
+		from t_resource 
+		where creatorId=#{userId}
+	</select>
+</mapper>

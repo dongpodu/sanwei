@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.well.sanwei.dao.OrderItemResourseDao">
+
+	<resultMap type="itemResource" id="itemResourceMap">
+		<result column="id" property="id" />
+		<result column="courseId" property="courseId" />
+		<result column="price" property="price" />
+		<result column="number" property="number" />
+		<result column="userId" property="userId" />
+		<result column="userName" property="userName" />
+		<result column="status" property="status" />
+		<result column="createTime" property="createTime" />
+		<result column="updateTime" property="updateTime" />
+		<association property="buyUser" javaType="user"
+			column="userId" select="com.well.sanwei.dao.UserDao.queryById"></association>
+		<association property="resource" javaType="resource"
+			column="courseId" select="com.well.sanwei.dao.ResourceDao.queryById"></association>
+	</resultMap>
+
+	<select id="queryByUserId" resultMap="itemResourceMap">
+		select * from t_orderitem o 
+		left join t_resource rec on o.courseId=rec.id 
+		left join t_user user on rec.creatorId=user.id
+		where o.userId=#{userId}
+	</select>
+	
+</mapper>

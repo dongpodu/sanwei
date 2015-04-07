@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.well.sanwei.dao.OrderItemDao">
+	<insert id="insert" parameterType="orderItem" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		t_orderitem(courseId,price,number,status,userId,userName,createTime,updateTime)
+		values(#{courseId,jdbcType=INTEGER},#{price,jdbcType=NUMERIC},#{number,jdbcType=INTEGER},
+		#{status,jdbcType=TINYINT},#{userId,jdbcType=INTEGER},#{userName,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<select id="queryById" resultType="orderItem">
+		select id,courseId,price,number,userId,userName,status,createTime,updateTime 
+		from t_orderitem
+		where id=#{id}
+	</select>
+	
+	<update id="updateStausById" parameterType="orderItem">
+		update t_orderitem set status=#{status} where id=#{id}
+	</update>
+
+	<delete id="deleteOrderItemById" parameterType="int">
+		delete from t_orderitem where id=#{id}
+	</delete>
+	
+</mapper>
